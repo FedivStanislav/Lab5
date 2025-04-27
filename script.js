@@ -7,13 +7,22 @@ let square;
 let isPlaying = false;
 let score = 0;
 
-document.getElementById('startButton').addEventListener('click', startGame);
 
-// Створюємо блок для статистики
-let stats = document.createElement('div');
-stats.id = 'stats';
-stats.innerHTML = "⏳ Час: 0 | ⭐ Очки: 0";
-document.body.insertBefore(stats, gameArea);
+let timeDisplay = document.createElement('div');
+timeDisplay.id = 'timeDisplay';
+timeDisplay.style.fontSize = '24px';
+timeDisplay.style.marginTop = '10px';
+
+let scoreDisplay = document.createElement('div');
+scoreDisplay.id = 'scoreDisplay';
+scoreDisplay.style.fontSize = '24px';
+scoreDisplay.style.marginTop = '10px';
+
+
+document.body.insertBefore(timeDisplay, gameArea);
+document.body.insertBefore(scoreDisplay, gameArea);
+
+document.getElementById('startButton').addEventListener('click', startGame);
 
 function startGame() {
     if (square) {
@@ -22,11 +31,11 @@ function startGame() {
     clearTimeout(timer);
     clearInterval(countdownInterval);
     score = 0;
-    updateStats();
+    updateScore(0);
 
     const selectedColor = document.getElementById('colorSelect').value;
     timeLimit = parseInt(document.getElementById('difficultySelect').value);
-    remainingTime = timeLimit / 1000; // Переводимо в секунди для таймера
+    remainingTime = timeLimit / 1000; 
 
     square = document.createElement('div');
     square.classList.add('square');
@@ -60,8 +69,8 @@ function handleSquareClick() {
     clearTimeout(timer);
     clearInterval(countdownInterval);
 
-    score += 5;
-    updateStats();
+    score += 5; 
+    updateScore(score);
 
     moveSquare();
     startTimer();
@@ -75,19 +84,24 @@ function startTimer() {
 }
 
 function startCountdown() {
-    remainingTime = timeLimit / 1000;
-    updateStats();
+    updateTimeDisplay(remainingTime);
     countdownInterval = setInterval(() => {
         remainingTime -= 1;
-        updateStats();
+        if (remainingTime >= 0) {
+            updateTimeDisplay(remainingTime);
+        }
         if (remainingTime <= 0) {
             clearInterval(countdownInterval);
         }
     }, 1000);
 }
 
-function updateStats() {
-    stats.innerHTML = `⏳ Час: ${remainingTime} с | ⭐ Очки: ${score}`;
+function updateTimeDisplay(time) {
+    timeDisplay.textContent = `⏳ Час: ${time} с`;
+}
+
+function updateScore(score) {
+    scoreDisplay.textContent = `⭐ Очки: ${score}`;
 }
 
 function endGame() {
