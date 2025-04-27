@@ -1,5 +1,4 @@
 let timer;
-let countdownInterval;
 let timeLimit;
 let remainingTime;
 let gameArea = document.getElementById('gameArea');
@@ -17,14 +16,12 @@ function startGame() {
         square.remove();
     }
     clearTimeout(timer);
-    clearInterval(countdownInterval);
     score = 0;
     updateScore(0);
 
     const selectedColor = document.getElementById('colorSelect').value;
     const difficultyValue = document.getElementById('difficultySelect').value;
 
-   
     if (difficultyValue === "easy") {
         timeLimit = 5000;
     } else if (difficultyValue === "medium") {
@@ -33,23 +30,22 @@ function startGame() {
         timeLimit = 2000;
     }
 
-    remainingTime = timeLimit / 1000; 
-
-    
-    stats.style.display = 'flex';
-
-    square = document.createElement('div');
-    square.classList.add('square');
-    square.style.backgroundColor = selectedColor;
-    gameArea.appendChild(square);
+    stats.style.display = 'flex'; 
+    createSquare(selectedColor);
 
     moveSquare();
     isPlaying = true;
 
     square.addEventListener('click', handleSquareClick);
 
-    startTimer();
-    startCountdown();
+    resetTimer();
+}
+
+function createSquare(color) {
+    square = document.createElement('div');
+    square.classList.add('square');
+    square.style.backgroundColor = color;
+    gameArea.appendChild(square);
 }
 
 function moveSquare() {
@@ -68,31 +64,28 @@ function moveSquare() {
 
 function handleSquareClick() {
     clearTimeout(timer);
-    clearInterval(countdownInterval);
-
-    score += 5; 
+    score += 5;
     updateScore(score);
 
     moveSquare();
-    startTimer();
-    startCountdown();
+    resetTimer(); 
 }
 
-function startTimer() {
+function resetTimer() {
+    remainingTime = timeLimit / 1000;
+    updateTimeDisplay(remainingTime);
+
     timer = setTimeout(() => {
         endGame();
     }, timeLimit);
-}
 
-function startCountdown() {
-    updateTimeDisplay(remainingTime);
-    countdownInterval = setInterval(() => {
+    let countdown = setInterval(() => {
         remainingTime -= 1;
         if (remainingTime >= 0) {
             updateTimeDisplay(remainingTime);
         }
-        if (remainingTime <= 0) {
-            clearInterval(countdownInterval);
+        if (remainingTime <= 0 || !isPlaying) {
+            clearInterval(countdown);
         }
     }, 1000);
 }
@@ -108,12 +101,10 @@ function updateScore(score) {
 function endGame() {
     isPlaying = false;
     clearTimeout(timer);
-    clearInterval(countdownInterval);
     if (square) {
         square.remove();
     }
     alert(`Гру закінчено!\nВаш результат: ⭐ ${score} очок`);
 
-    
-    stats.style.display = 'none';
+    stats.style.display = 'none'; 
 }
