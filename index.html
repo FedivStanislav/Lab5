@@ -19,11 +19,12 @@
             font-size: 16px;
         }
         #stats {
-            display: flex;
+            display: none; /* Статистика схована на початку */
             justify-content: center;
             gap: 40px;
             font-size: 24px;
             margin-bottom: 20px;
+            margin-top: 20px;
         }
         #gameArea {
             position: relative;
@@ -55,22 +56,24 @@
 
         <label for="difficultySelect">Виберіть складність:</label>
         <select id="difficultySelect">
-            <option value="2000">Легка</option>
-            <option value="1000">Середня</option>
-            <option value="500">Важка</option>
+            <option value="easy">Легка</option>   
+            <option value="medium">Середня</option> 
+            <option value="hard">Важка</option>   
         </select>
 
         <button id="startButton">Почати гру</button>
     </div>
 
-    <!-- ДОДАНО НОВЕ -->
+  
     <div id="stats">
         <div id="timeDisplay">⏳ Час: 0 с</div>
         <div id="scoreDisplay">⭐ Очки: 0</div>
     </div>
 
+  
     <div id="gameArea"></div>
 
+   
     <script src="script.js"></script>
 
 </body>
