@@ -3,24 +3,12 @@ let countdownInterval;
 let timeLimit;
 let remainingTime;
 let gameArea = document.getElementById('gameArea');
+let stats = document.getElementById('stats');
+let timeDisplay = document.getElementById('timeDisplay');
+let scoreDisplay = document.getElementById('scoreDisplay');
 let square;
 let isPlaying = false;
 let score = 0;
-
-
-let timeDisplay = document.createElement('div');
-timeDisplay.id = 'timeDisplay';
-timeDisplay.style.fontSize = '24px';
-timeDisplay.style.marginTop = '10px';
-
-let scoreDisplay = document.createElement('div');
-scoreDisplay.id = 'scoreDisplay';
-scoreDisplay.style.fontSize = '24px';
-scoreDisplay.style.marginTop = '10px';
-
-
-document.body.insertBefore(timeDisplay, gameArea);
-document.body.insertBefore(scoreDisplay, gameArea);
 
 document.getElementById('startButton').addEventListener('click', startGame);
 
@@ -34,8 +22,21 @@ function startGame() {
     updateScore(0);
 
     const selectedColor = document.getElementById('colorSelect').value;
-    timeLimit = parseInt(document.getElementById('difficultySelect').value);
+    const difficultyValue = document.getElementById('difficultySelect').value;
+
+   
+    if (difficultyValue === "easy") {
+        timeLimit = 5000;
+    } else if (difficultyValue === "medium") {
+        timeLimit = 3000;
+    } else if (difficultyValue === "hard") {
+        timeLimit = 2000;
+    }
+
     remainingTime = timeLimit / 1000; 
+
+    
+    stats.style.display = 'flex';
 
     square = document.createElement('div');
     square.classList.add('square');
@@ -112,4 +113,7 @@ function endGame() {
         square.remove();
     }
     alert(`Гру закінчено!\nВаш результат: ⭐ ${score} очок`);
+
+    
+    stats.style.display = 'none';
 }
