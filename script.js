@@ -72,7 +72,7 @@ function handleSquareClick() {
 }
 
 function resetTimer() {
-    remainingTime = timeLimit / 1000;
+    remainingTime = timeLimit / 1000; 
     updateTimeDisplay(remainingTime);
 
     timer = setTimeout(() => {
@@ -87,7 +87,7 @@ function resetTimer() {
         if (remainingTime <= 0 || !isPlaying) {
             clearInterval(countdown);
         }
-    }, 1000);
+    }, 1000); 
 }
 
 function updateTimeDisplay(time) {
