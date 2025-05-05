@@ -22,16 +22,21 @@ function startGame() {
     const selectedColor = document.getElementById('colorSelect').value;
     const difficultyValue = document.getElementById('difficultySelect').value;
 
+    let squareSize;
+
     if (difficultyValue === "easy") {
         timeLimit = 5000;
+        squareSize = 70;
     } else if (difficultyValue === "medium") {
         timeLimit = 3000;
+        squareSize = 50;
     } else if (difficultyValue === "hard") {
         timeLimit = 2000;
+        squareSize = 30;
     }
 
     stats.style.display = 'flex'; 
-    createSquare(selectedColor);
+    createSquare(selectedColor, squareSize);
 
     moveSquare();
     isPlaying = true;
@@ -41,10 +46,12 @@ function startGame() {
     resetTimer();
 }
 
-function createSquare(color) {
+function createSquare(color, size) {
     square = document.createElement('div');
     square.classList.add('square');
     square.style.backgroundColor = color;
+    square.style.width = `${size}px`;
+    square.style.height = `${size}px`;
     gameArea.appendChild(square);
 }
 
@@ -52,8 +59,11 @@ function moveSquare() {
     const areaWidth = gameArea.clientWidth;
     const areaHeight = gameArea.clientHeight;
 
-    const maxX = areaWidth - 50;
-    const maxY = areaHeight - 50;
+    const squareWidth = square.offsetWidth;
+    const squareHeight = square.offsetHeight;
+
+    const maxX = areaWidth - squareWidth;
+    const maxY = areaHeight - squareHeight;
 
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
