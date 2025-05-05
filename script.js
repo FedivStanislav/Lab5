@@ -1,4 +1,5 @@
 let timer;
+let countdown;
 let timeLimit;
 let remainingTime;
 let gameArea = document.getElementById('gameArea');
@@ -16,6 +17,7 @@ function startGame() {
         square.remove();
     }
     clearTimeout(timer);
+    clearInterval(countdown);
     score = 0;
     updateScore(0);
 
@@ -74,6 +76,7 @@ function moveSquare() {
 
 function handleSquareClick() {
     clearTimeout(timer);
+    clearInterval(countdown);
     score += 5;
     updateScore(score);
 
@@ -89,7 +92,7 @@ function resetTimer() {
         endGame();
     }, timeLimit);
 
-    let countdown = setInterval(() => {
+    countdown = setInterval(() => {
         remainingTime -= 1;
         if (remainingTime >= 0) {
             updateTimeDisplay(remainingTime);
@@ -111,10 +114,10 @@ function updateScore(score) {
 function endGame() {
     isPlaying = false;
     clearTimeout(timer);
+    clearInterval(countdown);
     if (square) {
         square.remove();
     }
     alert(`Гру закінчено!\nВаш результат: ⭐ ${score} очок`);
-
     stats.style.display = 'none'; 
 }
